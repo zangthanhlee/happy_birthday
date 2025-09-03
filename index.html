@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #111, #222);
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      text-align: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 3.5em;
+      margin-top: 50px;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #f0f;
+      animation: flicker 1.5s infinite alternate;
+      position: relative;
+      z-index: 2;
+            font-family: 'Times New Roman', Times, serif;
+
+    }
+
+    @keyframes flicker {
+      from { opacity: 1; text-shadow: 0 0 10px #f0f, 0 0 20px #0ff; }
+      to { opacity: 0.8; text-shadow: 0 0 20px #ff0, 0 0 40px #0ff; }
+    }
+
+    p {
+      font-size: 1.5em;
+      margin: 15px;
+      color: #ccc;
+      position: relative;
+      z-index: 2;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    .cake {
+      font-size: 5em;
+      margin: 20px 0;
+      animation: bounce 1.5s infinite;
+      text-shadow: 0 0 20px #ff0, 0 0 40px #f0f;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .gallery {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .frame {
+      width: 250px;
+      height: 350px;
+      border: 3px solid #0ff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #0ff, 0 0 40px #f0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .frame img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #ff0, 0 0 60px #f0f;
+    }
+
+    .goose {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 120px;
+      z-index: 3;
+      animation: gooseDance 2s infinite;
+    }
+
+    @keyframes gooseDance {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(5deg); }
+    }
+
+    #fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fireworks"></canvas>
+
+  <h1>🎤🥳SINH NHẬT MINH THƯ🦥🎉</h1>
+  <p>Háp pi bớt đây MINK THƠ 16 chủi, với sự hân hoan tột độ và yêu thương sâu thẳm nơi ruột già, kao - a.k.a someone u may love or hate, xin ban phước cho mài nh điều tốt lành nhất trên cõi thế tục này = cả tấm chân tình và lòng nguyện cầu thành tâm.</p>
+  <div class="cake">🔥🎂🔥</div>
+
+  <div class="gallery">
+    <div class="frame"><img src="imgae\gay.jpg" alt="Ảnh 1"></div>
+    <div class="frame"><img src="imgae\Screenshot 2025-09-03 224120.png" alt="Ảnh 2"></div>
+    <div class="frame"><img src="imgae\z6974128640478_de6d8b0aedd943d3308d04477dc4f1b6.jpg" alt="Ảnh 3"></div>
+  </div>
+
+  <img src="imgae\586479f4-1675-422d-91d6-65a3cd18fd49.png" alt="Ngỗng gang" class="goose">
+
+  <!-- Nhạc nền -->
+<audio id="bg-music" autoplay loop>
+  <source src="video/hpbd.mp4" type="audio/mp4">
+  Trình duyệt không hỗ trợ audio.
+</audio>
+
+
+  <script>
+    // Fireworks
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    resizeCanvas();
+
+    window.addEventListener("resize", resizeCanvas);
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = Math.random() * 3 + 2;
+        this.speedX = (Math.random() - 0.5) * 6;
+        this.speedY = (Math.random() - 0.5) * 6;
+        this.alpha = 1;
+        this.decay = 0.01 + Math.random() * 0.02;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.alpha -= this.decay;
+      }
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    let particles = [];
+    function createFirework(x, y) {
+      const colors = ["#ff0", "#f0f", "#0ff", "#ff4500", "#00ff7f"];
+      for (let i = 0; i < 50; i++) {
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particles.push(new Particle(x, y, color));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p, i) => {
+        p.update();
+        p.draw();
+        if (p.alpha <= 0) particles.splice(i, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    setInterval(() => {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height * 0.5;
+      createFirework(x, y);
+    }, 1000);
+
+    // Auto play hack (vì Chrome/Safari cần interaction)
+    const music = document.getElementById("bg-music");
+    document.body.addEventListener("click", () => {
+      music.play();
+    }, { once: true });
+  </script>
+</body>
+</html>
